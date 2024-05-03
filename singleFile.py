@@ -64,10 +64,11 @@ def extract_text_from_pdf(caminho_arquivo):
   #     page = pdf_file.load_page(page_num)
   #     text += page.get_text()
   # return text
+  
   texto = ""
-  with pdfplumber.open(caminho_arquivo) as pdf:
-    for pagina in pdf.pages:
-      texto += pagina.extract_text()
+  pdf_reader = pdfplumber.open(caminho_arquivo)
+  for page in  pdf_reader.pages:
+    texto += page.extract_text()
   return texto
 
 def main():
