@@ -1,5 +1,6 @@
 from groq import Groq
-import PyPDF2
+# import PyPDF2
+import fitz
 import os
 import datetime
 
@@ -49,17 +50,24 @@ pergunta = f"""Faça uma contestação.
 
 conteudo = "Você é um procurador com mais de 20 anos de experiência no município do estado do rio de janeiro. Você irá analisar minuciosamente o documento enviado e responder com base neste documento citado. Evite erros de ortografia na linguagem Português Brasil"
 
-def extract_text_from_pdf(pdf_file):
-  pdf_text = ""
-  pdf_reader = PyPDF2.PdfReader(pdf_file)
-  for page in pdf_reader.pages:
-    pdf_text += page.extract_text()
-  return pdf_text
+def extract_text_from_pdf(pdf_path):
+  # pdf_text = ""
+  # pdf_reader = fitz.PdfReader(pdf_file)
+  # for page in pdf_reader.pages:
+  #   pdf_text += page.extract_text()
+  # return pdf_text
+  text = ""
+  with fitz.open(pdf_path) as pdf_file:
+    for page_num in range(len(pdf_file)):
+      page = pdf_file.load_page(page_num)
+      text += page.get_text()
+  return text
+
+
 
 def main():
 
-  caminho_pdf = 'C:\Users\3470622\Desktop\Workspace\pgm testes\APIGroq\pdf'
-
+  caminho_pdf = r'C:\Users\3470622\Desktop\Workspace\pgm testes\APIGroq\pdf'
   
   conteudo_pasta = os.listdir(caminho_pdf)
 
@@ -78,8 +86,8 @@ def main():
                     {"role": "assistant", "content": text}
                   ],
                 model="gemma-7b-it",
-                temperature=0,
-                
+                temperature=1,
+                max_tokens=1024,
                 top_p=1,
                 stop=None,
             )
