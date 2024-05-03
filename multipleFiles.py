@@ -6,7 +6,7 @@ import os
 
 api_key = "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"
 
-client = Groq(api_key="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")
+client = Groq(api_key=api_key)
 
 def extract_text_from_pdf(pdf_file):
   pdf_text = ""
