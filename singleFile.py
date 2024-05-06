@@ -5,9 +5,8 @@ import fitz
 import os
 import datetime
 
-api_key = "SUA API KEY"
 
-client = Groq(api_key=api_key)
+client = Groq(api_key = "api_key")
 
 
 data_atual = datetime.datetime.now()
