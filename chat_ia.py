@@ -1,7 +1,7 @@
 from groq import Groq
 import os
 from extrair_texto import extract_text_from_pdf
-from texto_data import conteudo, pergunta
+from conteudo import conteudo, pergunta
 
 
 api_key = "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"
