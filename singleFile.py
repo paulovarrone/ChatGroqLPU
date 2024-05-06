@@ -100,14 +100,14 @@ def main():
                 stop=None,
         )
 
-        texto = chat_completion.choices[0].message.content
+        texto_da_contestacao = chat_completion.choices[0].message.content
 
-        txt_file_name = "Contestação_" + os.path.splitext(arquivo)[0] + ".txt"
+        nome_arquivo_texto = "Contestação_" + os.path.splitext(arquivo)[0] + ".txt"
 
-        txt_file_path = os.path.join(camininho_contestacao, txt_file_name)
+        caminho_texto = os.path.join(camininho_contestacao, nome_arquivo_texto)
 
-        with open(txt_file_path, 'w', encoding='utf-8') as contestacao:
-          contestacao.write(texto)
+        with open(caminho_texto, 'w', encoding='utf-8') as texto:
+          texto.write(texto_da_contestacao)
 
         print("Sucesso")
 
