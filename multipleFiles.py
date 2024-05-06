@@ -1,28 +1,27 @@
 from groq import Groq
-import PyPDF2
+import fitz
 import os
 
 
+client = Groq(api_key = "api_key")
 
-api_key = "SUA API KEY"
-
-client = Groq(api_key=api_key)
-
-def extract_text_from_pdf(pdf_file):
-  pdf_text = ""
-  pdf_reader = PyPDF2.PdfReader(pdf_file)
-  for page in pdf_reader.pages:
-    pdf_text += page.extract_text()
-  return pdf_text
+def extract_text_from_pdf(pdf_path):
+  text = ""
+  with fitz.open(pdf_path) as pdf_file:
+    for page_num in range(len(pdf_file)):
+      page = pdf_file.load_page(page_num)
+      text += page.get_text()
+  return text
 
 
 def resposta(caminho_pdf, caminho_resumos):
   caminho_pasta = os.path.isdir(caminho_pdf)
   conteudo_pasta = os.listdir(caminho_pdf)
+  pasta_resumos = os.path.exists(caminho_resumos)
 
   if caminho_pasta:
     # Criar a pasta "resumos" se ela não existir
-    if not os.path.exists(caminho_resumos):
+    if not pasta_resumos:
       os.makedirs(caminho_resumos)
 
     for arquivo in conteudo_pasta:
