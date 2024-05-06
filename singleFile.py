@@ -6,7 +6,7 @@ import os
 import datetime
 
 
-client = Groq(api_key = "api_key")
+client = Groq(api_key= "api_key")
 
 
 data_atual = datetime.datetime.now()
