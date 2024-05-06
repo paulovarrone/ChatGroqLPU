@@ -2,9 +2,11 @@ from groq import Groq
 import os
 from extrair_texto import extract_text_from_pdf
 from conteudo import conteudo, pergunta
+from dotenv import dotenv_values
 
+config = dotenv_values(".env")
 
-api_key = "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"
+api_key = config["api_key"]
 
 client = Groq(api_key = api_key)
 
