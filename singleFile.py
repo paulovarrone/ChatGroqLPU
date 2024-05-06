@@ -5,7 +5,7 @@ import fitz
 import os
 import datetime
 
-api_key = "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"
+api_key = "SUA API KEY"
 
 client = Groq(api_key=api_key)
 
