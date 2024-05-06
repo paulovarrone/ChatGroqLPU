@@ -1,12 +1,11 @@
 from groq import Groq
-# import PyPDF2
 import fitz
-# import pdfplumber
 import os
 import datetime
 
+api_key = "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"
 
-client = Groq(api_key= "api_key")
+client = Groq(api_key = api_key)
 
 
 data_atual = datetime.datetime.now()
@@ -50,35 +49,39 @@ pergunta = f"""Faça uma contestação.
 
 conteudo = "Você é um procurador com mais de 20 anos de experiência no município do estado do rio de janeiro. Você irá analisar minuciosamente o documento enviado e responder com base neste documento citado. Evite erros de ortografia na linguagem Português Brasil"
 
+
 def extract_text_from_pdf(pdf_path):
-  # pdf_text = ""
-  # pdf_reader = PyPDF2.PdfReader(pdf_file)
-  # for page in pdf_reader.pages:
-  #   pdf_text += page.extract_text()
-  # return pdf_text
+  try:
 
-  text = ""
-  with fitz.open(pdf_path) as pdf_file:
-    for page_num in range(len(pdf_file)):
-      page = pdf_file.load_page(page_num)
-      text += page.get_text()
-  return text
+    text = ""
 
-  # texto = ""
-  # pdf_reader = pdfplumber.open(caminho_arquivo)
-  # for page in  pdf_reader.pages:
-  #   texto += page.extract_text()
-  # return texto
+    with fitz.open(pdf_path) as pdf_file:
+      for page in pdf_file: 
+        text += page.get_text()
+
+    return text
+  
+  except Exception:
+    print("ERRO AO TENTAR EXTRAIR TEXTO")
+
 
 def main():
 
   caminho_pdf = r'C:\Users\3470622\Desktop\Workspace\pgm testes\APIGroq\pdf'
-  
+
+  camininho_contestacao = r'C:\Users\3470622\Desktop\Workspace\pgm testes\APIGroq\contestacao'
+
   conteudo_pasta = os.listdir(caminho_pdf)
+
+  pasta_contestacao = os.path.exists(camininho_contestacao)
 
   try: 
 
+    if not pasta_contestacao:
+      os.makedirs(camininho_contestacao)
+
     for arquivo in conteudo_pasta:
+
       if arquivo.endswith('.pdf'):
         pdf_file = os.path.join(caminho_pdf, arquivo)
         text = extract_text_from_pdf(pdf_file)
@@ -92,15 +95,19 @@ def main():
                   ],
                 model="llama3-70b-8192",
                 temperature=0,
-                #max_tokens=1024,
+                max_tokens=1024,
                 top_p=1,
                 stop=None,
-            )
+        )
 
-        
+        texto = chat_completion.choices[0].message.content
 
-        with open('contestacao.txt', 'w') as contestacao:
-          contestacao.write(chat_completion.choices[0].message.content)
+        txt_file_name = "Contestação_" + os.path.splitext(arquivo)[0] + ".txt"
+
+        txt_file_path = os.path.join(camininho_contestacao, txt_file_name)
+
+        with open(txt_file_path, 'w', encoding='utf-8') as contestacao:
+          contestacao.write(texto)
 
         print("Sucesso")
 
