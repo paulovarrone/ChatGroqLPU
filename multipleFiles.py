@@ -2,16 +2,24 @@ from groq import Groq
 import fitz
 import os
 
+api_key = "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"
 
-client = Groq(api_key = "api_key")
+client = Groq(api_key = api_key)
+
 
 def extract_text_from_pdf(pdf_path):
-  text = ""
-  with fitz.open(pdf_path) as pdf_file:
-    for page_num in range(len(pdf_file)):
-      page = pdf_file.load_page(page_num)
-      text += page.get_text()
-  return text
+  try:
+
+    text = ""
+
+    with fitz.open(pdf_path) as pdf_file:
+      for page in pdf_file: 
+        text += page.get_text()
+        
+    return text
+  
+  except Exception:
+    print("ERRO AO TENTAR EXTRAIR TEXTO")
 
 
 def resposta(caminho_pdf, caminho_resumos):
@@ -42,17 +50,17 @@ def resposta(caminho_pdf, caminho_resumos):
         temperature=0,
     )
                 
-        resumo = completion.choices[0].message.content
+      resumo = completion.choices[0].message.content
 
-        # Nome do arquivo de texto para salvar o resumo
-        txt_file_name = os.path.splitext(arquivo)[0] + "_resumo.txt"
+      # Nome do arquivo de texto para salvar o resumo
+      txt_file_name = os.path.splitext(arquivo)[0] + "_resumo.txt"
 
-        # Caminho completo para o arquivo de texto na pasta "resumos"
-        txt_file_path = os.path.join(caminho_resumos, txt_file_name)
+      # Caminho completo para o arquivo de texto na pasta "resumos"
+      txt_file_path = os.path.join(caminho_resumos, txt_file_name)
 
-        # Escreve o resumo no arquivo de texto
-        with open(txt_file_path, 'w', encoding='utf-8') as txt_file:
-          txt_file.write(resumo)
+      # Escreve a contestacao no arquivo de texto
+      with open(txt_file_path, 'w', encoding='utf-8') as txt_file:
+        txt_file.write(resumo)
 
 # Caminho PDF
 caminho_pdf = r'C:\Users\3470622\Desktop\Workspace\pgm testes\pdfs\DirTrein'
