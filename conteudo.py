@@ -37,6 +37,7 @@ pergunta = f"""Faça uma contestação.
         No final do documento, deve ser incluido no final da resposta com apenas uma quebra de linha:
             as informações do advogado ou procurador, nome do advogado ou procurador e seu registro de OAB. 
             {data_formatada} no documento.
+            Rio de Janeiro
         """
 
 conteudo = "Você é um procurador com mais de 20 anos de experiência no município do estado do rio de janeiro. Você irá analisar minuciosamente o documento enviado e responder com base neste documento citado. Evite erros de ortografia na linguagem Português Brasil"
