@@ -4,6 +4,7 @@ import os
 from extrair_texto import extract_text_from_pdf
 from conteudo import conteudo, pergunta
 from dotenv import dotenv_values
+from text_to_pdf import texto_para_pdf
 
 config = dotenv_values(".env")
 
@@ -45,32 +46,8 @@ def arquivo_texto(caminho_pdf, camininho_contestacao, conteudo_pasta,pasta_conte
         
         caminho_texto = os.path.join(camininho_contestacao, nome_arquivo_pdf)
 
-
-        pdf = FPDF()
-        pdf.add_page()
-        pdf.set_font("Arial", size=12)
-
-        # Dividir o texto em parágrafos e adicionar recuo
-        centralizar = False
-        paragrafos = texto_da_contestacao.split('\n')
-
-        for paragrafo in paragrafos:
-          paragrafo_original = paragrafo  # Guardar o parágrafo original para verificar a centralização
-          paragrafo = paragrafo.replace("Advogado:", "").replace("Data:", "").strip()
-
-          if "Informações do advogado:" in paragrafo_original:
-              paragrafo = paragrafo.replace("Informações do advogado:", "").strip()
-              centralizar = True
-
-          if centralizar:
-              pdf.set_font("Arial", 'B', size=12)
-              pdf.cell(0, 10, '    ' + paragrafo, ln=True, align='C')
-          else:
-              # Parágrafos antes de "Advogado:" são adicionados normalmente
-              pdf.multi_cell(0, 10, paragrafo)
-
-        pdf.output(caminho_texto)
-
+        texto_para_pdf(caminho_texto,texto_da_contestacao)
+      
         print("Contestação criada com sucesso!")
 
   except Exception as e:
