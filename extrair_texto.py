@@ -1,11 +1,11 @@
 import fitz
 
-def extract_text_from_pdf(pdf_path):
+def extract_text_from_pdf(caminho_pdf):
   try:
 
     text = ""
 
-    with fitz.open(pdf_path) as pdf_file:
+    with fitz.open(caminho_pdf) as pdf_file:
       for page in pdf_file: 
         text += page.get_text()
 
