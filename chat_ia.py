@@ -1,5 +1,4 @@
 from groq import Groq
-from fpdf import FPDF
 import os
 from extrair_texto import extract_text_from_pdf
 from conteudo import conteudo, pergunta
