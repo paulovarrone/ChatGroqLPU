@@ -11,5 +11,5 @@ def extract_text_from_pdf(caminho_pdf):
 
     return text
   
-  except Exception:
-    print("ERRO AO TENTAR EXTRAIR TEXTO")
+  except Exception as e:
+    print(f"ERRO AO TENTAR EXTRAIR TEXTO {text}: {e}")
