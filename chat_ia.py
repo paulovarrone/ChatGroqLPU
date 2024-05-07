@@ -1,4 +1,5 @@
 from groq import Groq
+from fpdf import FPDF
 import os
 from extrair_texto import extract_text_from_pdf
 from conteudo import conteudo, pergunta
@@ -6,9 +7,9 @@ from dotenv import dotenv_values
 
 config = dotenv_values(".env")
 
-api_key = config["api_key"]
+GROQ_API_KEY = config["GROQ_API_KEY"]
 
-client = Groq(api_key = api_key)
+client = Groq(api_key = GROQ_API_KEY)
 
 def arquivo_texto(caminho_pdf, camininho_contestacao, conteudo_pasta,pasta_contestacao):
   try: 
@@ -31,7 +32,7 @@ def arquivo_texto(caminho_pdf, camininho_contestacao, conteudo_pasta,pasta_conte
                     {"role": "user", "content": pergunta},
                     {"role": "assistant", "content": text}
                   ],
-                model="llama3-70b-8192",
+                model="llama3-8b-8192",
                 temperature=0,
                 max_tokens=1024,
                 top_p=1,
@@ -40,12 +41,31 @@ def arquivo_texto(caminho_pdf, camininho_contestacao, conteudo_pasta,pasta_conte
 
         texto_da_contestacao = chat_completion.choices[0].message.content
 
-        nome_arquivo_texto = "Contestação_" + os.path.splitext(arquivo)[0] + ".txt"
+        nome_arquivo_pdf = "Contestação_" + os.path.splitext(arquivo)[0] + ".pdf"
+        
+        caminho_texto = os.path.join(camininho_contestacao, nome_arquivo_pdf)
 
-        caminho_texto = os.path.join(camininho_contestacao, nome_arquivo_texto)
 
-        with open(caminho_texto, 'w', encoding='utf-8') as texto:
-          texto.write(texto_da_contestacao)
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font("Arial", size=12)
+
+        # Dividir o texto em parágrafos e adicionar recuo
+        centralizar = False
+        paragrafos = texto_da_contestacao.split('\n')
+
+        for paragrafo in paragrafos:
+          if "Advogado:" in paragrafo:
+              paragrafo = paragrafo.replace("Advogado:", "").strip()
+              centralizar = True
+          if centralizar:
+              pdf.set_font("Arial", 'B', size=12)
+              pdf.cell(0, 10, '    ' + paragrafo, ln=True, align='C')
+          else:
+              # Parágrafos antes de "Advogado:" são adicionados normalmente
+              pdf.multi_cell(0, 10, paragrafo)
+
+        pdf.output(caminho_texto)
 
         print("Contestação criada com sucesso!")
 
