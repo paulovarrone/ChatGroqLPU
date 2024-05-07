@@ -55,9 +55,13 @@ def arquivo_texto(caminho_pdf, camininho_contestacao, conteudo_pasta,pasta_conte
         paragrafos = texto_da_contestacao.split('\n')
 
         for paragrafo in paragrafos:
-          if "Advogado:" in paragrafo:
-              paragrafo = paragrafo.replace("Advogado:", "").strip()
+          paragrafo_original = paragrafo  # Guardar o parágrafo original para verificar a centralização
+          paragrafo = paragrafo.replace("Advogado:", "").replace("Data:", "").strip()
+
+          if "Informações do advogado:" in paragrafo_original:
+              paragrafo = paragrafo.replace("Informações do advogado:", "").strip()
               centralizar = True
+
           if centralizar:
               pdf.set_font("Arial", 'B', size=12)
               pdf.cell(0, 10, '    ' + paragrafo, ln=True, align='C')
