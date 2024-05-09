@@ -2,14 +2,12 @@ from groq import Groq
 import os
 from extrair_texto import extract_text_from_pdf
 from conteudo import conteudo, pergunta
-from dotenv import dotenv_values
 from text_to_pdf import texto_para_pdf
+from dotenv import load_dotenv
 
-config = dotenv_values(".env")
+load_dotenv()
 
-GROQ_API_KEY = config["GROQ_API_KEY"]
-
-client = Groq(api_key = GROQ_API_KEY)
+client = Groq()
 
 def arquivo_texto(caminho_pdf, camininho_contestacao, conteudo_pasta,pasta_contestacao):
   try: 
