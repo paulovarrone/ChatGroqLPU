@@ -18,7 +18,6 @@ def arquivo_texto(caminho_pdf, camininho_contestacao, conteudo_pasta,pasta_conte
       print("Pasta já existe.")
 
     for arquivo in conteudo_pasta:
-
       if arquivo.endswith('.pdf'):
         pdf_file = os.path.join(caminho_pdf, arquivo)
         text = extract_text_from_pdf(pdf_file)

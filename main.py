@@ -1,12 +1,11 @@
 import os
 from chat_ia import arquivo_texto 
 
-
 def main():
   try:
-    caminho_pdf = r'C:\Users\3470622\Desktop\Workspace\pgm testes\APIGroq\pdf'
+    caminho_pdf = "SEU CAMINHO DA PASTA PDF"
 
-    camininho_contestacao = r'C:\Users\3470622\Desktop\Workspace\pgm testes\APIGroq\contestacao'
+    camininho_contestacao = "CAMINHO PARA ONDE VOCE QUER CRIAR A PASTA COM A CONTESTACAO"
 
     conteudo_pasta = os.listdir(caminho_pdf)
 
